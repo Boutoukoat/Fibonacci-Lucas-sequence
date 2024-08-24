@@ -177,10 +177,10 @@ int main(int argc, char **argv)
 						mpz_mul(l, l, l);
 
 						if (subtract_once) {
-							mpz_add_ui(l, l, 2);	// l = (l)^2 -2
+							mpz_add_ui(l, l, 2);	// l = (l)^2 + 2
 							subtract_once = false;
 						} else {
-							mpz_sub_ui(l, l, 2);	// l = (l)^2 -2
+							mpz_sub_ui(l, l, 2);	// l = (l)^2 - 2
 						}
 
 					}
