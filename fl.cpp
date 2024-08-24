@@ -128,8 +128,8 @@ int main(int argc, char **argv)
 				unsigned k = __builtin_ctzll(nn);
 				unsigned long ss = nn >> k;
 				unsigned bit = 63 - __builtin_clzll(ss);
-				mpz_set_ui(f0, 1);	// f(1)
-				mpz_set_ui(f1, 0);	// f(0)
+				mpz_set_ui(f0, 0);	// f(0)
+				mpz_set_ui(f1, 1);	// f(1)
 
 // -----------------------------------------
 // compute F[s] and F[s-1]
