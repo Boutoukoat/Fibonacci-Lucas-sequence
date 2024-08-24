@@ -1,5 +1,15 @@
 /*
-From F(n+m) = F(n)*F(m-1)+F(n+1)*F(m) 
+------------------------------------------------------------
+Fibonacci calculator with reduced complexity
+------------------------------------------------------------
+
+From this formula where F(n) is the nth fibonacci number
+
+F(n+m) = F(n)*F(m-1)+F(n+1)*F(m) 
+
+deduce 
+
+F(n+1) = F(n) + F(n-1)
 
 deduce that
 
@@ -9,7 +19,8 @@ F(2n+1) = F(n-1) ^2 + F(n) ^2
 
 and this can be used in a binary left-to-right "double-and-add" addition chain.
 
-New little improvement
+New little barely known improvement
+-----------------------------------
 
 By setting n = s + 2^k and using Lucas sequences
 
@@ -73,7 +84,7 @@ int main(int argc, char **argv)
 		printf("\n");
 		printf("Examples\n");
 		printf("\n");
-		printf("%s 17 18 19\n", argv[0]);
+		printf("%s 0 1 2 3 4 5 6 7 8 9 10\n", argv[0]);
 		printf("%s -s -t 9 10 11 99 100 101 999 1000 1001\n", argv[0]);
 		printf("\n");
 		printf("This is based on libgmp and will crash the way GMP does when internal allocation fails\n");
@@ -108,7 +119,6 @@ int main(int argc, char **argv)
 			{
 				mpz_t f0, t, l, s;
 				mpz_init(f0);
-				mpz_init(l);
 				mpz_init(s);
 				mpz_init(t);
 
@@ -118,8 +128,8 @@ int main(int argc, char **argv)
 				unsigned k = __builtin_ctzll(nn);
 				unsigned long ss = nn >> k;
 				unsigned bit = 63 - __builtin_clzll(ss);
-				mpz_set_ui(f0, 0);	// f(0)
-				mpz_set_ui(f1, 1);	// f(1)
+				mpz_set_ui(f0, 1);	// f(1)
+				mpz_set_ui(f1, 0);	// f(0)
 
 // -----------------------------------------
 // compute F[s] and F[s-1]
@@ -143,6 +153,7 @@ int main(int argc, char **argv)
 				mpz_clear(s);
 
 				if (k != 0) {
+					mpz_init(l);
 // -----------------------------------------
 // compute F[s+1] 
 // -----------------------------------------
@@ -174,12 +185,12 @@ int main(int argc, char **argv)
 
 					}
 					mpz_mul(f1, f1, l);	// f1 = f1 * l
+					mpz_clear(l);
 				} else {
 					mpz_clear(t);
 					mpz_clear(f0);
 				}
 
-				mpz_clear(l);
 			}
 		}
 		clock_gettime(CLOCK_MONOTONIC, &t1);
