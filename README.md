@@ -281,51 +281,6 @@ F(     1048578) -->        2.455 msecs (      727966 bits)
 The calculations are based on GMP library. Failures on memory allocation on temporary numbers are handled the GMP way, i.e. by infinite loop, crashing or SIG_FPE signal. 
 
 
-# Complexity assuming a n*log(n) multiplication cost
-
-A formula like this can be handled with 3 direct transforms and 3 inverse transforms
-
-F(2n) = 2 * F(n) * F(n-1) - F(n) ^2 = ( F(n) + F(n-1) ) ^2 - F(n) ^ 2
-F(2n+1) = F(n) ^2 + F(n+1) ^2
-
-A formula like this can be handled with 2 direct transforms and 2 inverse transforms
-
-F(2n) = F(n) * L(n)
-L(2n) = L(n) ^2 + 2 
-
-A formula like this can be handled with 2 direct transforms and 1 inverse transforms
-
-F(2n) = F(n) * L(n)
-
-The following is very rough , no need to go to details due to n log(n) very harsh approximation (12 n log(2n) might be closer to reality)
-
-```
-last iteration costs 3 * n log2(n)
-previous lucas iteration costs 4 * n/2 log2(n/2)
-previous lucas iteration costs 4 * n/4 log2(n/4)
-previous lucas iteration costs 4 * n/8 log2(n/8)
-...
-```
-
-let k = log2(n), i.e n = 2^k and add the cost of all iterations
-
-(3 * 2^k * k) + (4 * 2^(k-1) * (k-1)) + (4 * 2^(k-2) * (k-2)) + (4 * 2^(k-3) * (k-3)) + ... + (4 * 2^0 * 0)
-
-= 4 * [sum(x * 2^x) from 1 to k] - k*2^k
-
-the well known sum(x*2^x) with x from 1 to k is 2 + (k-1)2^(k+1)
-
-= 4*(2 + (k-1)*2^(k+1)) - k*2^k
-
-= 8*(k-1)*2^(k) - k*2^k + 8
-
-= 7*k*2^(k) - 8*2^k + 8
-
-= 7*(log2(n)*2^log2(n)-8*2^log2(n) + 8
-
-= 7*log2(n)*n - 8*n + 8
-
-= O(n * log2(n) + O(n))
 
 
 
