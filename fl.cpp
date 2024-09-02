@@ -151,21 +151,18 @@ int main(int argc, char **argv)
 					}
 				}
 				mpz_clear(s);
+				mpz_clear(t);
 
 				if (k != 0) {
 					mpz_init(l);
 // -----------------------------------------
-// compute F[s+1] 
+// F[s] = f1
+// F[s+1] = f1 + f0
+// compute L(s) = 2*F[s+1] - F[s] = 2*f0 + f1
 // -----------------------------------------
-					mpz_add(t, f1, f0);
-// -----------------------------------------
-// compute L(s) = 2*F[s+1] - F[s]
-// -----------------------------------------
-					mpz_add(l, t, t);
-					mpz_sub(l, l, f1);	// l = 2 * f1 - f0
-
-					mpz_clear(t);
+					mpz_add(l, f0, f0);
 					mpz_clear(f0);
+					mpz_add(l, l, f1);	// l = 2 * f0 + f1
 
 					bool subtract_once = true;
 					while (k-- > 1) {
@@ -184,10 +181,12 @@ int main(int argc, char **argv)
 						}
 
 					}
+// -----------------------------------------
+// compute F[2s] 
+// -----------------------------------------
 					mpz_mul(f1, f1, l);	// f1 = f1 * l
 					mpz_clear(l);
 				} else {
-					mpz_clear(t);
 					mpz_clear(f0);
 				}
 
